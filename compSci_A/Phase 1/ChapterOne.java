@@ -206,3 +206,19 @@ public class ChapterOne {
 
     }
 }
+
+/*
+Chapter 1 summary:
+Be sure that you understand the difference between primitive and user-defined types
+and between the following types of operators: arithmetic, relational, logical, and assignment. Know which conditions lead to what types of errors.
+You should be able to work with numbers—know how to compare them and how
+to convert between decimal, binary, and hexadecimal numbers. Know how integers
+and floating-point numbers are stored in memory, and be aware of the conditions that
+can lead to round-off error.
+You should know the Integer constants Integer.MIN_VALUEand Integer.MAX_VALUE.
+Be familiar with each of the following control structures: conditional statements,
+for loops, while loops, and for-each loops.
+Be aware of the AP exam expectations concerning input and output.
+
+I will further note to develop a program that accurately compares floating point numbers. (chapter 1)
+ */

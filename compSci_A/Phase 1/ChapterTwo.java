@@ -146,3 +146,12 @@ public static String Name(String name){
     // public static String as the return type is a String.
     }
 }
+
+/*
+Chapter 2 summary:
+By now you should be able to write code for any given object, with its private data
+fields and methods encapsulated in a class. Be sure that you know the various types of
+methods—static, instance, and overloaded.
+You should also understand the difference between storage of primitive types and
+the references used for objects.
+ */

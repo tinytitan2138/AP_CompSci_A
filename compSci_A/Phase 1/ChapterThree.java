@@ -307,3 +307,16 @@ or an abstract class object.
 
 
 }
+/*
+Chapter 3 summary:
+You should be able to write your own subclasses, given any superclass, and also
+design, create, or modify a class that implements an interface.
+Be sure you understand the use of the keyword super, both in writing constructors
+and calling methods of the superclass.
+You should understand what polymorphism is: Recall that it only operates when
+methods have been overridden in at least one subclass. You should also be able to
+explain the difference between the following concepts:
+• An abstract class and an interface.
+• An overloaded method and an overridden method.
+• Dynamic binding (late binding) and static binding (early binding).
+ */
