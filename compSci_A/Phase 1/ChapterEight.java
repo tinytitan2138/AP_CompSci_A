@@ -1,5 +1,15 @@
 import java.util.Arrays;
 
+class MergeSortException extends Exception{
+    public MergeSortException(String prompt){
+        super(prompt);
+    }
+}
+
+
+
+
+
 class SelectionSort{
     private final int[] array;
     public SelectionSort(int[] array){
@@ -74,10 +84,60 @@ class SelectionSORT{
     }
 }
 
+class MergeSort {
+    void merge(int[] arr, int l, int m, int r) {
+        int n1 = m - l + 1;
+        int n2 = r - m;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        System.arraycopy(arr, l, L, 0, n1);
+        for (int j = 0; j < n2; j++)
+            R[j] = arr[m + 1 + j];
+
+        int i = 0, j = 0;
+        int k = l;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            } else {
+                arr[k] = R[j];
+                j++;
+
+            }
+            k++;
+        }
+
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+
+        }
+
+    }
+
+    public void sort(int[] arr, int l, int r) throws MergeSortException{
+        if (l < r) {
+            int m = l + (r - l) / 2;
+            sort(arr, l, m);
+            sort(arr, m + 1, r);
+            merge(arr, l, m, r);
+
+        }
 
 
-public class ChapterEight {
-    public static void main(String[] args){
+    }
+}
+    public  class ChapterEight {
+        public static void main(String[] args) throws MergeSortException {
         /*
         Some of the most important algorithms within computer science are sorting algorithms,
         one such algorithm is selection sort. The smallest
@@ -96,15 +156,19 @@ public class ChapterEight {
         is moved to variable left, and greater than is moved to the right, this is done recursively then they
         are all put together. It is O(logn) but O(n^2) in worst case.
          */
-        int[] mylist = {1,3,5,2,62,7,};
-       // SelectionSort sort = new SelectionSort(mylist);
-       // sort.selectionSort();
-      //  sort.print(); // seems like the books implementation doesnt work.
-        sortInsertion.INSERTIONSORT(mylist);
-        System.out.println(Arrays.toString(mylist)); // this one works.
-        mylist = new int[]{20, 40, 50, 1, 60};
-        SelectionSORT.sort(mylist);
-        System.out.println(Arrays.toString(mylist));
-
+            int[] mylist = {1, 3, 5, 2, 62, 7,};
+            // SelectionSort sort = new SelectionSort(mylist);
+            // sort.selectionSort();
+            //  sort.print(); // seems like the books implementation doesnt work.
+            sortInsertion.INSERTIONSORT(mylist);
+            System.out.println(Arrays.toString(mylist)); // this one works.
+            mylist = new int[]{20, 40, 50, 1, 60};
+            SelectionSORT.sort(mylist);
+            System.out.println(Arrays.toString(mylist));
+            mylist = new int[]{123, 52, 51, 6, 3, 754, 1};
+            MergeSort Sorter = new MergeSort();
+            Sorter.sort(mylist, 0, mylist.length - 1);
+            System.out.println(Arrays.toString(mylist));
+        }
     }
-}
+
