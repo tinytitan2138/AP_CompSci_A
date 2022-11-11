@@ -1,5 +1,10 @@
+import javax.sound.midi.SysexMessage;
 import java.util.Arrays;
-
+class BinarySearchExcepion extends Exception{
+    public BinarySearchExcepion(String prompt){
+        super(prompt);
+    }
+}
 class MergeSortException extends Exception{
     public MergeSortException(String prompt){
         super(prompt);
@@ -137,7 +142,7 @@ class MergeSort {
     }
 }
     public  class ChapterEight {
-        public static void main(String[] args) throws MergeSortException {
+        public static void main(String[] args) throws Exception {
         /*
         Some of the most important algorithms within computer science are sorting algorithms,
         one such algorithm is selection sort. The smallest
@@ -169,6 +174,163 @@ class MergeSort {
             MergeSort Sorter = new MergeSort();
             Sorter.sort(mylist, 0, mylist.length - 1);
             System.out.println(Arrays.toString(mylist));
+            mylist = new int[]{0, 12, 51, 3, 14, 12, 62342, 1};
+            mergeSort(mylist);
+            System.out.println(Arrays.toString(mylist));
+            /*
+            These were all merge sort algorithms, the best implementation was the one
+            written as a function, the recursion is hard to reverse engineer though. I will
+            now introduce the quick sort algorithm. I will further emphasize that it works by picking
+            random pivot values, then it sorts it using indices i and j, i is - 1 j i is 0,
+            j is compared to the pivot, if it less than the pivot then i is incremented then i and j
+            are swapped, if not, then j is incremented and i is not. You then end up with the pivot
+            value being in the correct spot, with the values to the left being less than, and the values
+            to the right being greater than. This is repeated recursively, they are then placed back together, as
+            every recursive trace to a pivot can be placed to either the right or the left of it which would
+            get you a sorted list.
+             */
+            mylist = new int[]{10, 32, 62, 632, 472, 654, 256, 3, 876, 535, 15, 43,};
+            quickSort(mylist, 0, mylist.length - 1);
+            System.out.println(Arrays.toString(mylist));
+            int[] search = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+            int index = sequentialSearch(search, 5);
+            if (index != -1) {
+                System.out.printf("%s found within %s at index: %s%n", 5, Arrays.toString(search), index);
+            } else System.out.println("wasnt found");
+            binarySearch(search, 5, 0, search.length - 1);
+            binarySearch(search, 1000, 0, search.length - 1);
+
+            /*
+            There are also sequential search and binary search algorithms, they search for the location of
+            an index within some array. Sequential search just searches linearly through the whole thing,
+            it has O(n) time complexity. Binary search has O(logn) time complexity. Binary search assumes a pre
+            ordered list, it works by analyzing if the middle value is equal to the target value, if it is less than
+            then it repeats the process but to the right of the middle value, if not, then to the left of the middle
+            value. It always starts from the middle of whatever sub-sequence it is.
+             */
+
+
+        } // methods below here
+
+        public static void mergeSort(int[] array) {
+            int n = array.length;
+            if (n < 2)
+                return;
+            int mid = n / 2;
+            int[] L = new int[mid]; // left and right arrays
+            int[] R = new int[n - mid];
+            for (int i = 0; i < mid; i++) // duplicates them accordingly
+                L[i] = array[i];
+            for (int i = mid; i < n; i++)
+                R[i - mid] = array[i];
+
+            mergeSort(L); // recursively creates new L and R
+            mergeSort(R); // 2 recursive traces, at the end of it is merge
+            merge(array, L, R); // merge merges them back into array using comparison.
+            /*
+            The recursive trace follows a basic pattern of splitting it up until
+            you get indiviudal compenents, then the call stack causes you to go backwards
+            in which you get an array with 2 elements tat gets sorted, then 4, then so on.
+            Eventually you get the final array which is the sorted initial array.
+             */
+
+
+        }
+
+        public static void merge(int[] array, int[] L, int[] R) {
+            int n = array.length;
+            int mid = n / 2;
+
+            int left = mid;
+            int right = n - mid;
+            int i = 0, j = 0, k = 0;
+            while (i < left && j < right) {
+                if (L[i] <= R[j]) {
+                    array[k++] = L[i++];
+                } // gets the smallest component then incraments the index from that list
+                else {
+                    array[k++] = R[j++];
+                }
+
+
+            }
+            while (i < left)
+                array[k++] = L[i++];
+
+            while (j < right)
+                array[k++] = R[j++];
+            /*
+            There will always be a difference of one between i and j (the last element) so it
+            gets what is essentially the last element of the list.
+             */
+
+        }
+
+        public static void quickSort(int[] array, int start, int end) {
+            if (end <= start) return; //base case
+
+            int pivot = partition(array, start, end); // location of pivot value after partition
+            quickSort(array, start, pivot - 1); // recursively partitioning the right and left arrays
+            quickSort(array, pivot + 1, end);
+        }
+
+        public static int partition(int[] array, int start, int end) {
+            int pivot = array[end]; //this all essentially works the exact same way as how I described.
+            int i = start - 1;
+            for (int j = start; j <= end - 1; j++) {
+                if (array[j] < pivot) {
+                    i++;
+                    int temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+            i++;
+            int temp = array[i];
+            array[i] = array[end];
+            array[end] = temp;
+            return i;
+        }
+
+        public static int sequentialSearch(int[] array, int target) {
+            int index = 0;
+            for (int i = 0; i < array.length; i++)
+                if (array[i] == target)
+                    index = i;
+
+            if (index != 0)
+                return index;
+            else return -1;
+        }
+
+        public static void binarySearch(int[] array, int target, int low, int high) throws BinarySearchExcepion {
+            if (high >= low) {
+                int mid = low + (high - low) / 2;
+                if (array[mid] == target)
+                    System.out.printf("%s was found within %s at index: %s%n", target, Arrays.toString(array), mid);
+
+                else if (array[mid] < target)
+                    binarySearch(array, target, mid + 1, array.length - 1);
+
+                else if (array[mid] > target)
+                    binarySearch(array, target, 0, mid - 1);
+            } else {
+                System.out.printf("%s was not found within %s%n", target, Arrays.toString(array));
+            }
         }
     }
+/*
+Chapter 8 summary:
+You should not memorize any sorting code. You must, however, be familiar with
+the mechanism used in each of the sorting algorithms. For example, you should be
+able to explain how the merge method of mergesort works, or how many elements
+are in their final sorted position after a certain number of passes through the selection
+sort loop. You should know the best and worst case situations for each of the sorting
+algorithms.
+Be familiar with the sequential and binary search algorithms. You should know that
+a binary search is more efficient than a sequential search, and that a binary search can
+only be used for an array that is sorted on the search key
 
+Quick idea:
+project where user gives a list then chooses what searching or sorting algorithm to use.
+ */
